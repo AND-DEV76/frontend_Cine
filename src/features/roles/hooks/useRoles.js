@@ -1,0 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
+import { getRoles } from "../api/rolApi";
+
+export const useRoles = () => {
+  return useQuery({
+    queryKey: ["roles"],
+    queryFn: getRoles,
+  });
+};
