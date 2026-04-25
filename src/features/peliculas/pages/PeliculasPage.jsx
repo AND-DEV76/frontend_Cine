@@ -1,13 +1,33 @@
 import PeliculaList from "../components/PeliculaList";
+import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
 
 const PeliculasPage = () => {
+  const user = useCurrentUser();
+
+  const goTo = (path) => {
+    window.history.pushState({}, "", path);
+    window.dispatchEvent(new Event("popstate"));
+  };
+
+  const isAdmin =
+    user?.rol?.nombre === "ADMIN" || user?.rol?.nombre === "EMPLEADO";
+
   return (
     <div>
       <h1 style={{ textAlign: "center", color: "white" }}>
-         Cartelera
+        Cartelera
       </h1>
 
-      <PeliculaList />
+      {/* 🔥 BOTÓN SOLO ADMIN */}
+      {isAdmin && (
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <button onClick={() => goTo("/peliculas/new")}>
+            + Agregar Película
+          </button>
+        </div>
+      )}
+
+      <PeliculaList goTo={goTo} />
     </div>
   );
 };

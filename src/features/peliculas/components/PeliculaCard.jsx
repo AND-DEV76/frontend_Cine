@@ -1,4 +1,13 @@
-const PeliculaCard = ({ pelicula }) => {
+import { useDeletePelicula } from "../hooks/useDelete";
+import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+
+const PeliculaCard = ({ pelicula, onEdit }) => {
+  const { mutate: eliminar } = useDeletePelicula();
+  const user = useCurrentUser();
+
+  const isAdmin =
+    user?.rol?.nombre === "ADMIN" || user?.rol?.nombre === "EMPLEADO";
+
   return (
     <div style={styles.card}>
       <img
@@ -12,11 +21,35 @@ const PeliculaCard = ({ pelicula }) => {
         <p>{pelicula.descripcion}</p>
 
         <p><strong>Duración:</strong> {pelicula.duracion} min</p>
-        <p><strong>Clasificación:</strong> {pelicula.clasificacion}</p>
+        <p><strong>Clasificación:</strong> {pelicula.clasificacion?.nombre}</p>
+
+        {/* 🔥 SOLO SI ES ADMIN */}
+        {isAdmin && (
+          <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+            <button onClick={() => onEdit(pelicula)}>
+              Editar
+            </button>
+
+            <button
+  onClick={() => {
+    const confirmar = window.confirm(
+      `¿Seguro que deseas eliminar "${pelicula.nombre}"?`
+    );
+
+    if (confirmar) {
+      eliminar(pelicula.idPelicula);
+    }
+  }}
+>
+  Eliminar
+</button>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
 
 const styles = {
   card: {

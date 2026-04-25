@@ -8,6 +8,7 @@ import LoginPage from "../features/auth/pages/LoginPage";
 import AdminPanelPage from "../features/admin/pages/AdminPanelPage";
 import UsuariosPage from "../features/usuarios/pages/UsuariosPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
+import PeliculaForm from "../features/peliculas/pages/PeliculaForm";
 
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ function App() {
 
         {/* CONTENIDO DINÁMICO */}
         {path === "/" && <PeliculasPage />}
+        {path === "/peliculas/new" && <PeliculaForm />}
         {path === "/login" && <LoginPage />}
         {path === "/admin" && <h1>Panel Administrativo</h1>}
         {path === "/admin" && <AdminPanelPage />}
