@@ -4,6 +4,7 @@ import { useClasificaciones } from "../hooks/useClasificaciones";
 import { useGeneros } from "../hooks/useGeneros";
 import { useCreatePeliculaGenero } from "../hooks/useCreatePeliculaGenero";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import "../../../styles/pelicula.css";
 
 const PeliculaForm = () => {
   const user = useCurrentUser();
@@ -35,7 +36,6 @@ const PeliculaForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 🔥 VALIDACIONES
     if (!form.nombre || !form.duracion || !form.idClasificacion) {
       alert("Todos los campos obligatorios deben llenarse");
       return;
@@ -63,17 +63,15 @@ const PeliculaForm = () => {
       onSuccess: (res) => {
         const peliculaId = res.data.idPelicula;
 
-        // 🔥 RELACIÓN N:M CON GENEROS
         generosSeleccionados.forEach((idGenero) => {
           crearRelacion({
             idPelicula: peliculaId,
-            idGenero: idGenero,
+            idGenero,
           });
         });
 
         alert("Película creada correctamente 🎬");
 
-        // reset
         setForm({
           nombre: "",
           duracion: "",
@@ -87,15 +85,15 @@ const PeliculaForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form}>
-      <h2 style={{ color: "white" }}>Nueva Película</h2>
+    <form onSubmit={handleSubmit} className="pelicula-form">
+      <h2>Nueva Película</h2>
 
       <input
         name="nombre"
         placeholder="Nombre"
         value={form.nombre}
         onChange={handleChange}
-        style={styles.input}
+        className="pelicula-input"
       />
 
       <input
@@ -103,15 +101,14 @@ const PeliculaForm = () => {
         placeholder="Duración (min)"
         value={form.duracion}
         onChange={handleChange}
-        style={styles.input}
+        className="pelicula-input"
       />
 
-      {/* 🎬 CLASIFICACION DINAMICA */}
       <select
         name="idClasificacion"
         value={form.idClasificacion}
         onChange={handleChange}
-        style={styles.input}
+        className="pelicula-input"
       >
         <option value="">Seleccionar clasificación</option>
         {clasificaciones.map((c) => (
@@ -126,70 +123,45 @@ const PeliculaForm = () => {
         placeholder="Descripción"
         value={form.descripcion}
         onChange={handleChange}
-        style={styles.input}
+        className="pelicula-input"
       />
 
-{/* 🎬 GENEROS MULTIPLES */}
-<div style={styles.generosContainer}>
-  {generos.map((g) => (
-    <label key={g.id_genero} style={styles.checkbox}>
-      <input
-        type="checkbox"
-        value={g.id_genero}
-        checked={generosSeleccionados.includes(String(g.id_genero))}
-        onChange={(e) => {
-          const value = e.target.value;
+      <div className="pelicula-generos">
+        {generos.map((g) => (
+          <label key={g.id_genero}>
+            <input
+              type="checkbox"
+              value={g.id_genero}
+              checked={generosSeleccionados.includes(String(g.id_genero))}
+              onChange={(e) => {
+                const value = e.target.value;
 
-          if (e.target.checked) {
-            setGenerosSeleccionados([...generosSeleccionados, value]);
-          } else {
-            setGenerosSeleccionados(
-              generosSeleccionados.filter((id) => id !== value)
-            );
-          }
-        }}
-      />
-      {g.nombre}
-    </label>
-  ))}
-</div>
+                if (e.target.checked) {
+                  setGenerosSeleccionados([...generosSeleccionados, value]);
+                } else {
+                  setGenerosSeleccionados(
+                    generosSeleccionados.filter((id) => id !== value)
+                  );
+                }
+              }}
+            />
+            {g.nombre}
+          </label>
+        ))}
+      </div>
 
-      {/* 🎬 POSTER */}
       <input
         type="file"
         name="poster"
         onChange={handleChange}
-        style={styles.input}
+        className="pelicula-input"
       />
 
-      <button type="submit" disabled={isLoading} style={styles.button}>
+      <button type="submit" disabled={isLoading} className="pelicula-button">
         {isLoading ? "Guardando..." : "Guardar"}
       </button>
     </form>
   );
-};
-
-const styles = {
-  form: {
-    maxWidth: "400px",
-    margin: "30px auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  input: {
-    padding: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "10px",
-    background: "#ff8811",
-    border: "none",
-    color: "white",
-    cursor: "pointer",
-    borderRadius: "5px",
-  },
 };
 
 export default PeliculaForm;

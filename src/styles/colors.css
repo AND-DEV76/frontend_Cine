@@ -1,7 +1,10 @@
 :root {
-  --color-bg: #000000;
-  --color-primary: #ff8811;
-  --color-secondary: #0094c6;
-  --color-white: #fafffd;
-  --color-dark-blue: #005e7c;
+  --color-bg: #FEFCFB;         /* fondo general */
+  --color-surface: #FFFFFF;    /* tarjetas */
+  --color-primary: #034078;    /* botones */
+  --color-primary-hover: #001F54;
+  --color-secondary: #1282A2;  /* links / acentos */
+  --color-text: #0A1128;       /* texto principal */
+  --color-muted: #6c7a89;      /* texto secundario */
+  --color-border: #e6e6e6;
 }

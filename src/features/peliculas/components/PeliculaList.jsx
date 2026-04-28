@@ -4,11 +4,11 @@ import PeliculaCard from "./PeliculaCard";
 const PeliculaList = ({ goTo }) => {
   const { data, isLoading, isError } = usePeliculas();
 
-  if (isLoading) return <p style={{ color: "white" }}>Cargando películas...</p>;
-  if (isError) return <p style={{ color: "red" }}>Error al cargar películas</p>;
+  if (isLoading) return <p>Cargando películas...</p>;
+  if (isError) return <p>Error al cargar películas</p>;
 
   return (
-    <div style={styles.container}>
+    <div className="pelicula-list">
       {data.map((peli) => (
         <PeliculaCard
           key={peli.idPelicula}
@@ -18,16 +18,6 @@ const PeliculaList = ({ goTo }) => {
       ))}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "20px",
-    padding: "20px",
-    justifyContent: "center",
-  },
 };
 
 export default PeliculaList;

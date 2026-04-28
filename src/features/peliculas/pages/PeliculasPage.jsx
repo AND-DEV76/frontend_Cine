@@ -1,5 +1,6 @@
 import PeliculaList from "../components/PeliculaList";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import "../../../styles/pelicula.css";
 
 const PeliculasPage = () => {
   const user = useCurrentUser();
@@ -13,15 +14,15 @@ const PeliculasPage = () => {
     user?.rol?.nombre === "ADMIN" || user?.rol?.nombre === "EMPLEADO";
 
   return (
-    <div>
-      <h1 style={{ textAlign: "center", color: "white" }}>
-        Cartelera
-      </h1>
+    <div className="pelicula-page">
+      <h1 className="pelicula-title">Cartelera</h1>
 
-      {/* 🔥 BOTÓN SOLO ADMIN */}
       {isAdmin && (
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <button onClick={() => goTo("/peliculas/new")}>
+          <button
+            className="pelicula-add-btn"
+            onClick={() => goTo("/peliculas/new")}
+          >
             + Agregar Película
           </button>
         </div>
