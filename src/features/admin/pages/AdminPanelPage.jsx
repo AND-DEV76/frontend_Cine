@@ -15,6 +15,17 @@ const AdminPanelPage = () => {
           title="Usuarios"
           onClick={() => goTo("/admin/usuarios")}
         />
+
+
+        <AdminCard
+          title="Película"
+          onClick={() => goTo("/admin/generos")}
+        />
+
+        <AdminCard
+  title="Clasificación"
+  onClick={() => goTo("/admin/clasificaciones")}
+/>
       </div>
 
     </div>

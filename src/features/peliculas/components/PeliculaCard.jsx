@@ -20,8 +20,22 @@ const PeliculaCard = ({ pelicula, onEdit }) => {
         <h3>{pelicula.nombre}</h3>
         <p>{pelicula.descripcion}</p>
 
-        <p><strong>Duración:</strong> {pelicula.duracion} min</p>
-        <p><strong>Clasificación:</strong> {pelicula.clasificacion?.nombre}</p>
+        <p>
+          <strong>Duración:</strong> {pelicula.duracion} min
+        </p>
+
+        {/* ✅ CORREGIDO */}
+        <p>
+          <strong>Clasificación:</strong> {pelicula.clasificacion}
+        </p>
+
+        {/* ✅ NUEVO: MOSTRAR GENEROS */}
+        <p>
+          <strong>Géneros:</strong>{" "}
+          {pelicula.generos && pelicula.generos.length > 0
+            ? pelicula.generos.join(", ")
+            : "Sin géneros"}
+        </p>
 
         {isAdmin && (
           <div className="pelicula-actions">

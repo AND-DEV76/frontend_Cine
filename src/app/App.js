@@ -4,12 +4,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "../components/Navbar";
 import PeliculasPage from "../features/peliculas/pages/PeliculasPage";
 import LoginPage from "../features/auth/pages/LoginPage";
+import RegisterPage from "../features/auth/pages/RegisterPage";
 
 import AdminPanelPage from "../features/admin/pages/AdminPanelPage";
 import UsuariosPage from "../features/usuarios/pages/UsuariosPage";
-import RegisterPage from "../features/auth/pages/RegisterPage";
 import PeliculaForm from "../features/peliculas/pages/PeliculaForm";
 
+import ClasificacionPage from "../features/clasificacion/pages/ClasificacionPage";
+import PeliculaEditForm from "../features/peliculas/pages/PeliculaEditForm";
+
+
+
+import GeneroPage from "../features/genero/pages/GeneroPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +34,15 @@ function App() {
     };
   }, []);
 
+  // USUARIO DESDE LOCALSTORAGE
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // VALIDACIÓN DE ROL
+  const isAdmin =
+    user &&
+    (user.rol.nombre === "ADMIN" ||
+      user.rol.nombre === "EMPLEADO");
+
   return (
     <QueryClientProvider client={queryClient}>
       <div style={{ background: "#121212", minHeight: "100vh" }}>
@@ -35,15 +50,28 @@ function App() {
         {/* NAVBAR */}
         <Navbar />
 
-        {/* CONTENIDO DINÁMICO */}
+        {/* RUTAS PÚBLICAS */}
         {path === "/" && <PeliculasPage />}
-        {path === "/peliculas/new" && <PeliculaForm />}
         {path === "/login" && <LoginPage />}
-        {path === "/admin" && <h1>Panel Administrativo</h1>}
-        {path === "/admin" && <AdminPanelPage />}
-        {path === "/admin/usuarios" && <UsuariosPage />}
-         {path === "/register" && <RegisterPage />}
+        {path === "/register" && <RegisterPage />}
+        {path === "/peliculas/new" && <PeliculaForm />}
+     
+          
 
+          {path.startsWith("/peliculas/edit/") && <PeliculaEditForm />}
+
+
+        {/* RUTAS PROTEGIDAS */}
+        {path === "/admin" &&
+          (isAdmin ? <AdminPanelPage /> : <LoginPage />)}
+          {path === "/admin/generos" &&
+  (isAdmin ? <GeneroPage /> : <LoginPage />)}
+
+        {path === "/admin/usuarios" &&
+          (isAdmin ? <UsuariosPage /> : <LoginPage />)}
+
+          {path === "/admin/clasificaciones" &&
+  (isAdmin ? <ClasificacionPage /> : <LoginPage />)}
 
       </div>
     </QueryClientProvider>

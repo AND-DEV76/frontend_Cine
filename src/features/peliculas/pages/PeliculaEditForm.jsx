@@ -1,18 +1,20 @@
-import { useState } from "react";
-import { useCreatePelicula } from "../hooks/useCreatePelicula";
+import { useState, useEffect } from "react";
+import { useUpdatePelicula } from "../hooks/useUpdatePelicula";
 import { useClasificaciones } from "../hooks/useClasificaciones";
 import { useGeneros } from "../hooks/useGeneros";
 import { useCreatePeliculaGenero } from "../hooks/useCreatePeliculaGenero";
+import { usePeliculas } from "../hooks/usePeliculas";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
-import "../../../styles/pelicula.css";
 
-const PeliculaForm = () => {
+const PeliculaEditForm = () => {
   const user = useCurrentUser();
 
-  const { mutateAsync: crearPeliculaAsync, isPending: isLoading } = useCreatePelicula();
+  const { mutateAsync: updatePeliculaAsync, isPending: isLoading } = useUpdatePelicula();
+  const { crearRelacionAsync } = useCreatePeliculaGenero();
+
+  const { data: peliculas = [] } = usePeliculas();
   const { data: clasificaciones = [] } = useClasificaciones();
   const { data: generos = [] } = useGeneros();
-  const { crearRelacionAsync } = useCreatePeliculaGenero();
 
   const [form, setForm] = useState({
     nombre: "",
@@ -23,6 +25,35 @@ const PeliculaForm = () => {
   });
 
   const [generosSeleccionados, setGenerosSeleccionados] = useState([]);
+  const [peliculaId, setPeliculaId] = useState(null);
+
+  // obtener ID desde URL
+  useEffect(() => {
+    const path = window.location.pathname;
+    const id = path.split("/").pop();
+    setPeliculaId(Number(id));
+  }, []);
+
+  // cargar datos
+  useEffect(() => {
+    if (!peliculaId || peliculas.length === 0) return;
+
+    const peli = peliculas.find(p => Number(p.idPelicula) === Number(peliculaId));
+    if (!peli) return;
+
+    setForm({
+      nombre: peli.nombre || "",
+      duracion: peli.duracion || "",
+      idClasificacion: peli.idClasificacion || "",
+      descripcion: peli.descripcion || "",
+      poster: null,
+    });
+
+    setGenerosSeleccionados(
+      peli.generos ? peli.generos.map(id => String(id)) : []
+    );
+
+  }, [peliculaId, peliculas]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -38,10 +69,10 @@ const PeliculaForm = () => {
     const value = e.target.value;
 
     if (e.target.checked) {
-      setGenerosSeleccionados((prev) => [...prev, value]);
+      setGenerosSeleccionados(prev => [...prev, value]);
     } else {
-      setGenerosSeleccionados((prev) =>
-        prev.filter((id) => id !== value)
+      setGenerosSeleccionados(prev =>
+        prev.filter(id => id !== value)
       );
     }
   };
@@ -49,7 +80,7 @@ const PeliculaForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔴 VALIDACIONES ORIGINALES (NO TOCADAS)
+    // mismas validaciones que tu form original
     if (!form.nombre || !form.duracion || !form.idClasificacion || !form.descripcion) {
       alert("Todos los campos obligatorios deben llenarse");
       return;
@@ -65,15 +96,8 @@ const PeliculaForm = () => {
       return;
     }
 
-    // 🆕 VALIDACIÓN GÉNEROS
     if (generosSeleccionados.length === 0) {
       alert("Debes seleccionar al menos un género");
-      return;
-    }
-
-    // 🆕 VALIDACIÓN POSTER
-    if (!form.poster) {
-      alert("Debes seleccionar una imagen (poster)");
       return;
     }
 
@@ -82,62 +106,40 @@ const PeliculaForm = () => {
     data.append("duracion", form.duracion);
     data.append("idClasificacion", form.idClasificacion);
     data.append("descripcion", form.descripcion);
-    data.append("poster", form.poster);
     data.append("creadoPor", user.idUsuario);
 
+    if (form.poster) {
+      data.append("poster", form.poster);
+    }
+
     try {
-      const res = await crearPeliculaAsync(data);
-
-      console.log("RESPUESTA COMPLETA:", res);
-
-      const peliculaId = res?.data?.idPelicula || res?.idPelicula;
-
-      if (!peliculaId) {
-        throw new Error("No se pudo obtener el ID de la película");
-      }
-
-      console.log("PELÍCULA ID:", peliculaId);
-
-      // 🔥 RELACIONES
-      for (const idGenero of generosSeleccionados) {
-        const payload = {
-          idPelicula: peliculaId,
-          idGenero: Number(idGenero),
-        };
-
-        console.log("ENVIANDO RELACIÓN:", payload);
-
-        await crearRelacionAsync(payload);
-      }
-
-      alert("Película y géneros guardados correctamente");
-
-      // RESET
-      setForm({
-        nombre: "",
-        duracion: "",
-        idClasificacion: "",
-        descripcion: "",
-        poster: null,
+      await updatePeliculaAsync({
+        id: peliculaId,
+        data: data,
       });
 
-      setGenerosSeleccionados([]);
+      // volver a crear relaciones
+      for (const idGenero of generosSeleccionados) {
+        await crearRelacionAsync({
+          idPelicula: peliculaId,
+          idGenero: Number(idGenero),
+        });
+      }
+
+      alert("Película actualizada correctamente");
 
     } catch (error) {
-      console.error("ERROR COMPLETO:", error);
-      console.error("RESPONSE DATA:", error.response?.data);
-
-      alert("Error al guardar la película");
+      console.error(error);
+      alert("Error al actualizar película");
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="pelicula-form">
-      <h2>Nueva Película</h2>
+      <h2>Editar Película</h2>
 
       <input
         name="nombre"
-        placeholder="Nombre"
         value={form.nombre}
         onChange={handleChange}
         className="pelicula-input"
@@ -145,7 +147,6 @@ const PeliculaForm = () => {
 
       <input
         name="duracion"
-        placeholder="Duración (min)"
         value={form.duracion}
         onChange={handleChange}
         className="pelicula-input"
@@ -167,13 +168,11 @@ const PeliculaForm = () => {
 
       <input
         name="descripcion"
-        placeholder="Descripción"
         value={form.descripcion}
         onChange={handleChange}
         className="pelicula-input"
       />
 
-      {/* 🎬 GÉNEROS */}
       <div className="pelicula-generos">
         {generos.map((g) => (
           <label key={g.id_genero}>
@@ -196,10 +195,10 @@ const PeliculaForm = () => {
       />
 
       <button type="submit" disabled={isLoading} className="pelicula-button">
-        {isLoading ? "Guardando..." : "Guardar"}
+        {isLoading ? "Guardando..." : "Actualizar"}
       </button>
     </form>
   );
 };
 
-export default PeliculaForm;
+export default PeliculaEditForm;

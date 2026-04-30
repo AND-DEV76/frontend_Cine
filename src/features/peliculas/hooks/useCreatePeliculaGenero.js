@@ -2,7 +2,15 @@ import { useMutation } from "@tanstack/react-query";
 import { createPeliculaGenero } from "../api/peliculaGeneroApi";
 
 export const useCreatePeliculaGenero = () => {
-  return useMutation({
-    mutationFn: createPeliculaGenero,
+  const mutation = useMutation({
+    mutationFn: async (data) => {
+      const res = await createPeliculaGenero(data);
+      return res.data; // 🔥 IMPORTANTE
+    },
   });
+
+  return {
+    ...mutation,
+    crearRelacionAsync: mutation.mutateAsync,
+  };
 };
