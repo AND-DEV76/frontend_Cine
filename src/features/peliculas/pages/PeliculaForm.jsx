@@ -5,6 +5,7 @@ import { useGeneros } from "../hooks/useGeneros";
 import { useCreatePeliculaGenero } from "../hooks/useCreatePeliculaGenero";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
 import "../../../styles/pelicula.css";
+import Swal from 'sweetalert2';
 
 const PeliculaForm = () => {
   const user = useCurrentUser();
@@ -49,31 +50,30 @@ const PeliculaForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔴 VALIDACIONES ORIGINALES (NO TOCADAS)
     if (!form.nombre || !form.duracion || !form.idClasificacion || !form.descripcion) {
-      alert("Todos los campos obligatorios deben llenarse");
+      Swal.fire('Advertencia', 'Todos los campos obligatorios deben llenarse', 'warning');
       return;
     }
 
     if (isNaN(form.duracion)) {
-      alert("La duración debe ser un número");
+      Swal.fire('Advertencia', 'La duración debe ser un número', 'warning');
       return;
     }
 
     if (!user) {
-      alert("Usuario no autenticado");
+      Swal.fire('Error', 'Usuario no autenticado', 'error');
       return;
     }
 
     // 🆕 VALIDACIÓN GÉNEROS
     if (generosSeleccionados.length === 0) {
-      alert("Debes seleccionar al menos un género");
+      Swal.fire('Advertencia', 'Debes seleccionar al menos un género', 'warning');
       return;
     }
 
     // 🆕 VALIDACIÓN POSTER
     if (!form.poster) {
-      alert("Debes seleccionar una imagen (poster)");
+      Swal.fire('Advertencia', 'Debes seleccionar una imagen (poster)', 'warning');
       return;
     }
 
@@ -110,7 +110,7 @@ const PeliculaForm = () => {
         await crearRelacionAsync(payload);
       }
 
-      alert("Película y géneros guardados correctamente");
+      Swal.fire('Éxito', 'Película y géneros guardados correctamente', 'success');
 
       // RESET
       setForm({
@@ -127,7 +127,7 @@ const PeliculaForm = () => {
       console.error("ERROR COMPLETO:", error);
       console.error("RESPONSE DATA:", error.response?.data);
 
-      alert("Error al guardar la película");
+      Swal.fire('Error', 'Error al guardar la película', 'error');
     }
   };
 

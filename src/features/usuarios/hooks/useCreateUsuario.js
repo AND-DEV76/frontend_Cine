@@ -12,7 +12,7 @@ export const useCreateUsuario = () => {
     },
     onError: (err) => {
       console.error(err);
-      alert("Error al crear usuario");
+      Swal.fire('Error', 'Error al crear usuario', 'error');
     }
   });
 };

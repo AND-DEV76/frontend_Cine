@@ -12,7 +12,7 @@ export const useUpdateUsuario = () => {
     },
     onError: (err) => {
       console.error(err);
-      alert("Error al actualizar usuario");
+      Swal.fire('Error', 'Error al actualizar usuario', 'error');
     }
   });
 };

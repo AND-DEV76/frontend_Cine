@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { registerRequest } from "../api/authApi";
+import Swal from 'sweetalert2';
 
 const RegisterForm = () => {
   const [form, setForm] = useState({
@@ -41,8 +42,9 @@ const RegisterForm = () => {
         idRol: 2 // 🔥 CLIENTE
       });
 
-      alert("Usuario creado correctamente");
-      window.location.href = "/login";
+      Swal.fire('Éxito', 'Usuario creado correctamente', 'success').then(() => {
+        window.location.href = "/login";
+      });
 
     } catch {
       setError("Error al registrar");

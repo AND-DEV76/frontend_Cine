@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useCurrentUser } from "../features/auth/hooks/useCurrentUser";
 import { useLogout } from "../features/auth/hooks/useLogout";
+import mascotImg from "../assets/minipekka.png";
+import "../styles/navbar.css";
 
 const Navbar = () => {
   const user = useCurrentUser();
   const { logout } = useLogout();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const goTo = (path) => {
     window.history.pushState({}, "", path);
@@ -12,60 +21,44 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ ...styles.nav, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 20px" }}>
-      
-      <div style={styles.logo}> CinemaRoyale</div>
+    <nav className={`navbar-container ${scrolled ? "scrolled" : ""}`}>
+      <div className="nav-brand" onClick={() => goTo("/")}>
+        <img src={mascotImg} alt="Cinema Royale" className="nav-brand-icon" />
+        <span className="brand-text">
+          Cinema<span className="brand-royale">Royale</span>
+        </span>
+      </div>
 
-      {!user ? (
-        <button style={styles.button} onClick={() => goTo("/login")}>
-          Iniciar Sesión
-        </button>
-      ) : (
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <span>👤 {user.username}</span>
+      <div className="nav-links">
+        <span className="nav-link" onClick={() => goTo("/")}>Inicio</span>
+        <span className="nav-link" onClick={() => goTo("/cartelera")}>Cartelera</span>
+      </div>
 
-          {(user.rol.nombre === "ADMIN" ||
-            user.rol.nombre === "EMPLEADO") && (
-            <button style={styles.button} onClick={() => goTo("/admin")}>
-              Panel Admin
-            </button>
-          )}
-
-          <button style={styles.button} onClick={logout}>
-            Logout
+      <div className="nav-user">
+        {!user ? (
+          <button className="btn-royale btn-primary" onClick={() => goTo("/login")}>
+            Iniciar Sesión
           </button>
-        </div>
-      )}
+        ) : (
+          <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+            <span className="user-greeting">
+              Hola, <span className="user-name">{user.username}</span>
+            </span>
+
+            {(user.rol.nombre === "ADMIN" || user.rol.nombre === "EMPLEADO") && (
+              <button className="btn-royale btn-ghost" onClick={() => goTo("/admin")}>
+                Administración
+              </button>
+            )}
+
+            <button className="btn-royale btn-ghost" onClick={logout}>
+              Cerrar Sesión
+            </button>
+          </div>
+        )}
+      </div>
     </nav>
   );
-};
-
-const styles = {
-  nav: {
-    background: "var(--color-bg)",
-    color: "var(--color-white)",
-    borderBottom: "2px solid var(--color-secondary)",
-  },
-  logo: {
-    color: "var(--color-primary)",
-    fontSize: "22px",
-    fontWeight: "bold",
-  },
-
-
- 
-  button: {
-    background: "var(--color-primary)",
-    border: "none",
-    padding: "10px 18px",
-    color: "#fff",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    transition: "all 0.3s ease",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
-  }
-
 };
 
 export default Navbar;

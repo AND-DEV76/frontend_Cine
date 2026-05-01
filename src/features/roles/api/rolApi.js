@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:8080/api/roles";
+const API = `${import.meta.env.VITE_API_URL}/roles`;
 
 export const getRoles = async () => {
   const res = await axios.get(API);

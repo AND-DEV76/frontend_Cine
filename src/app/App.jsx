@@ -4,17 +4,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "../components/Navbar";
 import PeliculasPage from "../features/peliculas/pages/PeliculasPage";
 import LoginPage from "../features/auth/pages/LoginPage";
-import RegisterPage from "../features/auth/pages/RegisterPage";
 
 import AdminPanelPage from "../features/admin/pages/AdminPanelPage";
 import UsuariosPage from "../features/usuarios/pages/UsuariosPage";
+import RegisterPage from "../features/auth/pages/RegisterPage";
 import PeliculaForm from "../features/peliculas/pages/PeliculaForm";
+
+import Footer from "../components/Footer";
+import LandingPage from "../features/landing/pages/LandingPage";
 
 import ClasificacionPage from "../features/clasificacion/pages/ClasificacionPage";
 import PeliculaEditForm from "../features/peliculas/pages/PeliculaEditForm";
-
-
-
 import GeneroPage from "../features/genero/pages/GeneroPage";
 
 const queryClient = new QueryClient();
@@ -45,34 +45,30 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div style={{ background: "#121212", minHeight: "100vh" }}>
+      <div style={{ background: "var(--color-bg)", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         
         {/* NAVBAR */}
         <Navbar />
 
-        {/* RUTAS PÚBLICAS */}
-        {path === "/" && <PeliculasPage />}
-        {path === "/login" && <LoginPage />}
-        {path === "/register" && <RegisterPage />}
-        {path === "/peliculas/new" && <PeliculaForm />}
-     
+        {/* CONTENIDO DINÁMICO (Con padding-top para que el navbar fijo no lo tape, excepto en el landing) */}
+        <div style={{ flex: 1, paddingTop: path === '/' ? '0' : '80px' }}>
+          {path === "/" && <LandingPage />}
+          {path === "/cartelera" && <PeliculasPage />}
+          {path === "/login" && <LoginPage />}
+          {path === "/register" && <RegisterPage />}
           
-
+          {path === "/peliculas/new" && <PeliculaForm />}
           {path.startsWith("/peliculas/edit/") && <PeliculaEditForm />}
 
+          {path === "/admin" && (isAdmin ? <AdminPanelPage /> : <LoginPage />)}
+          {path === "/admin/usuarios" && (isAdmin ? <UsuariosPage /> : <LoginPage />)}
+          {path === "/admin/generos" && (isAdmin ? <GeneroPage /> : <LoginPage />)}
+          {path === "/admin/clasificaciones" && (isAdmin ? <ClasificacionPage /> : <LoginPage />)}
+        </div>
 
-        {/* RUTAS PROTEGIDAS */}
-        {path === "/admin" &&
-          (isAdmin ? <AdminPanelPage /> : <LoginPage />)}
-          {path === "/admin/generos" &&
-  (isAdmin ? <GeneroPage /> : <LoginPage />)}
-
-        {path === "/admin/usuarios" &&
-          (isAdmin ? <UsuariosPage /> : <LoginPage />)}
-
-          {path === "/admin/clasificaciones" &&
-  (isAdmin ? <ClasificacionPage /> : <LoginPage />)}
-
+        {/* FOOTER */}
+        <Footer />
+        
       </div>
     </QueryClientProvider>
   );

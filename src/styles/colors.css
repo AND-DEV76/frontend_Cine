@@ -1,10 +1,171 @@
 :root {
-  --color-bg: #FEFCFB;         /* fondo general */
-  --color-surface: #FFFFFF;    /* tarjetas */
-  --color-primary: #034078;    /* botones */
-  --color-primary-hover: #001F54;
-  --color-secondary: #1282A2;  /* links / acentos */
-  --color-text: #0A1128;       /* texto principal */
-  --color-muted: #6c7a89;      /* texto secundario */
-  --color-border: #e6e6e6;
+  /* ── Paleta Cinema Royale ─────────────────────── */
+  /* Extraída directamente del Mini PEKKA y la UI de Clash Royale */
+  --color-bg: #070d1a;
+  --color-surface: #0f1a2e;
+  --color-surface-alt: #162240;
+  --color-primary: #00c8ff;        /* Cyan eléctrico (ojos del Mini PEKKA) */
+  --color-primary-hover: #38deff;
+  --color-primary-glow: rgba(0, 200, 255, 0.25);
+  --color-secondary: #f5a623;      /* Dorado (pluma del casco) */
+  --color-secondary-hover: #ffc04d;
+  --color-secondary-glow: rgba(245, 166, 35, 0.25);
+  --color-accent: #3b6df0;         /* Azul real profundo */
+  --color-text: #e8edf5;
+  --color-muted: #7a8ba7;
+  --color-border: rgba(0, 200, 255, 0.08);
+  --color-danger: #ef4444;
+
+  /* ── Fuentes ──────────────────────────────────── */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ── RESET ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ── GLASSMORPHISM ────────────────────────────── */
+.glass {
+  background: rgba(15, 26, 46, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+}
+
+/* ── BOTONES ──────────────────────────────────── */
+.btn-royale {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), #0090cc);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--color-primary-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--color-primary-glow);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--color-secondary), #d48b1a);
+  color: #000;
+  box-shadow: 0 4px 20px var(--color-secondary-glow);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--color-secondary-glow);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(0, 200, 255, 0.05);
+}
+
+/* ── KEYFRAMES GLOBALES ───────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--color-primary-glow); }
+  50% { box-shadow: 0 0 40px var(--color-primary-glow), 0 0 60px rgba(0, 200, 255, 0.1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── SCROLLBAR ────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-alt);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }

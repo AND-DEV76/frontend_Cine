@@ -11,7 +11,7 @@ const PeliculaCard = ({ pelicula, onEdit }) => {
   return (
     <div className="pelicula-card">
       <img
-        src={`http://localhost:8080/uploads/${pelicula.poster}`}
+        src={pelicula.poster}
         alt={pelicula.nombre}
         className="pelicula-img"
       />
