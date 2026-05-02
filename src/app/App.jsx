@@ -16,6 +16,8 @@ import LandingPage from "../features/landing/pages/LandingPage";
 import ClasificacionPage from "../features/clasificacion/pages/ClasificacionPage";
 import PeliculaEditForm from "../features/peliculas/pages/PeliculaEditForm";
 import GeneroPage from "../features/genero/pages/GeneroPage";
+import SalasPage from "../features/salas/pages/SalasPage";
+
 
 const queryClient = new QueryClient();
 
@@ -57,8 +59,11 @@ function App() {
           {path === "/login" && <LoginPage />}
           {path === "/register" && <RegisterPage />}
           
+          
           {path === "/peliculas/new" && <PeliculaForm />}
           {path.startsWith("/peliculas/edit/") && <PeliculaEditForm />}
+
+          {path === "/admin/salas" && (isAdmin ? <SalasPage /> : <LoginPage />)}
 
           {path === "/admin" && (isAdmin ? <AdminPanelPage /> : <LoginPage />)}
           {path === "/admin/usuarios" && (isAdmin ? <UsuariosPage /> : <LoginPage />)}
