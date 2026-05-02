@@ -1,0 +1,171 @@
+:root {
+  --color-bg: #070d1a;
+  --color-surface: #0f1a2e;
+  --color-surface-alt: #162240;
+
+  --color-primary: #00c8ff;
+  --color-primary-hover: #38deff;
+  --color-primary-glow: rgba(0, 200, 255, 0.25);
+
+  --color-secondary: #f5a623;
+  --color-secondary-hover: #ffc04d;
+  --color-secondary-glow: rgba(245, 166, 35, 0.25);
+
+  --color-text: #e8edf5;
+  --color-muted: #7a8ba7;
+  --color-border: rgba(0, 200, 255, 0.08);
+  --color-danger: #ef4444;
+}
+
+/* ─────────────── CONTENEDOR ─────────────── */
+.funciones-container {
+  padding: 30px;
+  background: var(--color-bg);
+  min-height: 100vh;
+  color: var(--color-text);
+}
+
+.funciones-container h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: var(--color-primary);
+  text-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* ─────────────── ERROR ─────────────── */
+.error-box {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid var(--color-danger);
+  color: var(--color-text);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* ─────────────── FORMULARIO ─────────────── */
+.funcion-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+
+  background: var(--color-surface);
+  padding: 18px;
+  border-radius: 14px;
+
+  border: 1px solid var(--color-border);
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.05);
+
+  margin-bottom: 25px;
+}
+
+/* inputs */
+.funcion-form select,
+.funcion-form input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  outline: none;
+  transition: 0.2s;
+}
+
+.funcion-form select:focus,
+.funcion-form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+/* botón */
+.funcion-form button {
+  grid-column: span 4;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.funcion-form button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 15px var(--color-primary-glow);
+}
+
+/* ─────────────── GRID ─────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+/* ─────────────── CARD ─────────────── */
+.funcion-card {
+  display: flex;
+  gap: 15px;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+
+  padding: 12px;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.funcion-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 200, 255, 0.08);
+}
+
+.poster {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+}
+
+/* info */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info h3 {
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.info p {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* botón eliminar */
+.info button {
+  margin-top: auto;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+
+  background: var(--color-danger);
+  color: white;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.info button:hover {
+  opacity: 0.85;
+}

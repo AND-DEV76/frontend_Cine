@@ -19,6 +19,10 @@ import GeneroPage from "../features/genero/pages/GeneroPage";
 import SalasPage from "../features/salas/pages/SalasPage";
 
 
+
+import FuncionesPage from "../features/funciones/pages/FuncionesPage";
+
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -69,6 +73,9 @@ function App() {
           {path === "/admin/usuarios" && (isAdmin ? <UsuariosPage /> : <LoginPage />)}
           {path === "/admin/generos" && (isAdmin ? <GeneroPage /> : <LoginPage />)}
           {path === "/admin/clasificaciones" && (isAdmin ? <ClasificacionPage /> : <LoginPage />)}
+
+
+          {path === "/admin/funciones" && (isAdmin ? <FuncionesPage /> : <LoginPage />)}
         </div>
 
         {/* FOOTER */}
