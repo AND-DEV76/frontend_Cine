@@ -103,12 +103,12 @@
 }
 
 .pelicula-btn-delete {
-  background: #e74c3c;
+  background: var(--color-danger);
   color: white;
 }
 
 .pelicula-btn-delete:hover {
-  background: #c0392b;
+  background: #b91c1c;
 }
 
 /* FORMULARIO */
@@ -137,6 +137,8 @@
   border: 1px solid var(--color-border);
   outline: none;
   transition: 0.2s;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 .pelicula-input:focus {

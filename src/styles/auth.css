@@ -35,6 +35,8 @@
   border-radius: 8px;
   outline: none;
   transition: all 0.25s ease;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 .auth-card input:focus {

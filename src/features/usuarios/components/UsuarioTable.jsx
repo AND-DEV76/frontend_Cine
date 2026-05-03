@@ -9,8 +9,8 @@ const UsuarioTable = ({ usuarios, onEdit }) => {
   }
 };
   return (
-    <table style={{ width: "100%", background: "var(--color-white)" }}>
-      <thead style={{ background: "var(--color-dark-blue)", color: "white" }}>
+    <table style={{ width: "100%", background: "var(--color-surface)", color: "var(--color-text)", borderRadius: "10px", overflow: "hidden" }}>
+      <thead style={{ background: "var(--color-table-header)" }}>
         <tr>
           <th>Username</th>
           <th>Nombre</th>
@@ -37,7 +37,7 @@ const UsuarioTable = ({ usuarios, onEdit }) => {
               </button>
               
               <button
-  style={{ background: "red", marginLeft: "5px", color: "#fff" }}
+  style={{ background: "var(--color-danger)", marginLeft: "5px", color: "#fff" }}
   onClick={() => handleDelete(u.idUsuario)}
 >
   Eliminar

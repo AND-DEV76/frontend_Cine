@@ -1,6 +1,6 @@
 .salas-container {
   padding: 30px;
-  background: radial-gradient(circle at top, #0a1326, var(--color-bg));
+  background: var(--color-bg);
   min-height: 100vh;
   color: var(--color-text);
   font-family: var(--font-body);
@@ -73,7 +73,7 @@
 .asiento {
   width: 32px;
   height: 32px;
-  background: linear-gradient(145deg, #1f2937, #111827);
+  background: var(--color-surface-alt);
   border-radius: 6px;
   color: var(--color-muted);
   font-size: 11px;
@@ -136,7 +136,7 @@ button:hover {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  background: #0a1326;
+  background: var(--color-input-bg);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   color: var(--color-text);
@@ -171,8 +171,8 @@ button:hover {
 }
 
 .funcion-card {
-  background: #1e1e2f;
-  color: white;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
   padding: 10px;
   border-radius: 10px;
 }

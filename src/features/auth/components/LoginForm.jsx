@@ -38,7 +38,7 @@ const LoginForm = () => {
     <form className="auth-card" onSubmit={handleSubmit}>
       <h2>Iniciar Sesión</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "var(--color-danger)" }}>{error}</p>}
 
       <input
         placeholder="Username"

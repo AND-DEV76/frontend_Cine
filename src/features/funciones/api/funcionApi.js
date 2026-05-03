@@ -1,26 +1,34 @@
-const BASE_URL = "http://localhost:8080/api/funciones";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL + "/funciones";
 
 export const getFunciones = async () => {
-  const res = await fetch(BASE_URL);
-  return res.json();
+  const res = await axios.get(API_URL);
+  return res.data;
+};
+
+export const getFuncionesPorPelicula = async (idPelicula) => {
+  const res = await axios.get(`${API_URL}/pelicula/${idPelicula}`);
+  return res.data;
 };
 
 export const createFuncion = async (data) => {
-  const res = await fetch(BASE_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  const result = await res.json();
-
-  if (!res.ok) {
-    throw new Error(result.error || "Error al crear función");
+  try {
+    const res = await axios.post(API_URL, data);
+    return res.data;
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.error) {
+      throw new Error(error.response.data.error);
+    }
+    throw error;
   }
-
-  return result;
 };
 
 export const deleteFuncion = async (id) => {
-  await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+  await axios.delete(`${API_URL}/${id}`);
+};
+
+export const getEstadoAsientos = async (idFuncion) => {
+  const res = await axios.get(`${API_URL}/${idFuncion}/asientos`);
+  return res.data;
 };

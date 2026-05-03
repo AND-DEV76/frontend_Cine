@@ -1,24 +1,53 @@
 :root {
   /* ── Paleta Cinema Royale ─────────────────────── */
-  /* Extraída directamente del Mini PEKKA y la UI de Clash Royale */
   --color-bg: #070d1a;
   --color-surface: #0f1a2e;
   --color-surface-alt: #162240;
-  --color-primary: #00c8ff;        /* Cyan eléctrico (ojos del Mini PEKKA) */
+  --color-primary: #00c8ff;
   --color-primary-hover: #38deff;
   --color-primary-glow: rgba(0, 200, 255, 0.25);
-  --color-secondary: #f5a623;      /* Dorado (pluma del casco) */
+  --color-secondary: #f5a623;
   --color-secondary-hover: #ffc04d;
   --color-secondary-glow: rgba(245, 166, 35, 0.25);
-  --color-accent: #3b6df0;         /* Azul real profundo */
+  --color-accent: #3b6df0;
   --color-text: #e8edf5;
   --color-muted: #7a8ba7;
   --color-border: rgba(0, 200, 255, 0.08);
   --color-danger: #ef4444;
 
+  /* ── Inputs & Tables ───────────────────────────── */
+  --color-input-bg: #0a1326;
+  --color-input-text: #e8edf5;
+  --color-table-header: #0f1a2e;
+  --color-card-overlay: rgba(255, 255, 255, 0.05);
+  --color-footer-bg: #040810;
+
   /* ── Fuentes ──────────────────────────────────── */
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
+}
+
+:root[data-theme="light"] {
+  --color-bg: #f4f7fa;
+  --color-surface: #ffffff;
+  --color-surface-alt: #e9eef5;
+  --color-primary: #0088cc;
+  --color-primary-hover: #006ba1;
+  --color-primary-glow: rgba(0, 136, 204, 0.2);
+  --color-secondary: #d68900;
+  --color-secondary-hover: #b37200;
+  --color-secondary-glow: rgba(214, 137, 0, 0.2);
+  --color-accent: #2851c4;
+  --color-text: #1a2333;
+  --color-muted: #64748b;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-danger: #dc2626;
+
+  --color-input-bg: #ffffff;
+  --color-input-text: #1a2333;
+  --color-table-header: #e2e8f0;
+  --color-card-overlay: rgba(0, 0, 0, 0.04);
+  --color-footer-bg: #e2e8f0;
 }
 
 /* ── RESET ─────────────────────────────────────── */
@@ -35,6 +64,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -57,6 +87,31 @@ a:hover {
 img {
   max-width: 100%;
   display: block;
+}
+
+/* ── GLOBAL FORM ELEMENTS (theme-aware) ────────── */
+input, select, textarea {
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+  border: 1px solid var(--color-border);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+table th {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* ── GLASSMORPHISM ────────────────────────────── */

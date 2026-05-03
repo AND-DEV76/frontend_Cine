@@ -17,12 +17,10 @@ import ClasificacionPage from "../features/clasificacion/pages/ClasificacionPage
 import PeliculaEditForm from "../features/peliculas/pages/PeliculaEditForm";
 import GeneroPage from "../features/genero/pages/GeneroPage";
 import SalasPage from "../features/salas/pages/SalasPage";
-
-
-
 import FuncionesPage from "../features/funciones/pages/FuncionesPage";
-
-
+import PeliculaDetallePage from "../features/funciones/pages/PeliculaDetallePage";
+import CheckoutPage from "../features/checkout/pages/CheckoutPage";
+import MisBoletosPage from "../features/checkout/pages/MisBoletosPage";
 const queryClient = new QueryClient();
 
 function App() {
@@ -40,6 +38,17 @@ function App() {
     };
   }, []);
 
+  const [theme, setTheme] = useState(localStorage.getItem("app-theme") || "dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("app-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === "dark" ? "light" : "dark");
+  };
+
   // USUARIO DESDE LOCALSTORAGE
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -54,7 +63,7 @@ function App() {
       <div style={{ background: "var(--color-bg)", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         
         {/* NAVBAR */}
-        <Navbar />
+        <Navbar theme={theme} toggleTheme={toggleTheme} />
 
         {/* CONTENIDO DINÁMICO (Con padding-top para que el navbar fijo no lo tape, excepto en el landing) */}
         <div style={{ flex: 1, paddingTop: path === '/' ? '0' : '80px' }}>
@@ -63,7 +72,9 @@ function App() {
           {path === "/login" && <LoginPage />}
           {path === "/register" && <RegisterPage />}
           
-          
+          {path.startsWith("/pelicula/") && !path.includes("/edit/") && <PeliculaDetallePage />}
+          {path === "/checkout" && <CheckoutPage />}
+          {path === "/mis-boletos" && <MisBoletosPage />}
           {path === "/peliculas/new" && <PeliculaForm />}
           {path.startsWith("/peliculas/edit/") && <PeliculaEditForm />}
 

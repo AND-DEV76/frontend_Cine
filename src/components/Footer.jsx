@@ -1,5 +1,5 @@
 import React from 'react';
-import mascotImg from '../assets/minipekka.png';
+import mascotImg from '../assets/logo.png';
 import '../styles/footer.css';
 
 const Footer = () => {

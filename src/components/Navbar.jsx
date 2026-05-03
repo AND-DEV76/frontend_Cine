@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useCurrentUser } from "../features/auth/hooks/useCurrentUser";
 import { useLogout } from "../features/auth/hooks/useLogout";
-import mascotImg from "../assets/minipekka.png";
+import { FiSun, FiMoon } from "react-icons/fi";
+import mascotImg from "../assets/logo.png";
 import "../styles/navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
   const user = useCurrentUser();
   const { logout } = useLogout();
   const [scrolled, setScrolled] = useState(false);
@@ -34,7 +35,15 @@ const Navbar = () => {
         <span className="nav-link" onClick={() => goTo("/cartelera")}>Cartelera</span>
       </div>
 
-      <div className="nav-user">
+      <div className="nav-user" style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+        <button
+          onClick={toggleTheme}
+          className="theme-toggle-btn"
+          title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+        >
+          {theme === "dark" ? <FiSun /> : <FiMoon />}
+        </button>
+
         {!user ? (
           <button className="btn-royale btn-primary" onClick={() => goTo("/login")}>
             Iniciar Sesión

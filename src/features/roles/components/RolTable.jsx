@@ -10,8 +10,8 @@ const RolTable = ({ roles, onEdit }) => {
   };
 
   return (
-    <table style={{ width: "100%" }}>
-      <thead style={{ background: "var(--color-dark-blue)", color: "#fff" }}>
+    <table style={{ width: "100%", background: "var(--color-surface)", color: "var(--color-text)", borderRadius: "10px", overflow: "hidden" }}>
+      <thead style={{ background: "var(--color-table-header)" }}>
         <tr>
           <th>Nombre</th>
           <th>Acciones</th>
@@ -33,7 +33,7 @@ const RolTable = ({ roles, onEdit }) => {
 
               <button
                 onClick={() => handleDelete(r.idRol)}
-                style={{ background: "red", marginLeft: "5px", color: "#fff" }}
+                style={{ background: "var(--color-danger)", marginLeft: "5px", color: "#fff" }}
               >
                 Eliminar
               </button>
