@@ -4,17 +4,21 @@ const FuncionCard = ({ funcion, onDelete }) => {
   const formatHora = (hora) => {
     if (!hora) return "";
 
-    // si viene LocalDateTime
+    // Si la hora viene en formato "HH:MM:SS"
+    if (typeof hora === "string" && hora.length >= 5) {
+      return hora.substring(0, 5);
+    }
+
+    // fallback por si viene LocalDateTime
     const date = new Date(hora);
-
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    if (!isNaN(date)) {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+    return hora;
   };
-
-  // 🔥 OCULTAR FECHA (NO SE MUESTRA)
-  // simplemente NO la usamos
 
   return (
     <div className="funcion-card">
@@ -31,10 +35,8 @@ const FuncionCard = ({ funcion, onDelete }) => {
 
         <p> Sala: {funcion.numeroSala}</p>
 
-        {/* ❌ FECHA OCULTA (NO SE MUESTRA) */}
-
-        {/* ✔ SOLO HORA BONITA */}
-        <p> {formatHora(funcion.hora)}</p>
+        <p> Fecha: {funcion.fecha}</p>
+        <p> Hora: {formatHora(funcion.hora)}</p>
 
         <button onClick={() => onDelete(funcion.idFuncion)}>
           Eliminar
