@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import "../../../styles/clasificacion.css";
 
 import ClasificacionTable from "../components/ClasificacionTable";
@@ -37,17 +38,23 @@ const ClasificacionPage = () => {
   const handleDelete = (id) => {
 
     // 🟡 Confirmación
-    if (!window.confirm("¿Seguro que quieres eliminar esta clasificación?")) {
-      return;
-    }
-
-    remove.mutate(id, {
-      // 🔴 ERROR DEL BACKEND
-      onError: (error) => {
-        alert(
-          error.response?.data ||
-          "No se puede eliminar la clasificación"
-        );
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¿Seguro que quieres eliminar esta clasificación?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        remove.mutate(id, {
+          // 🔴 ERROR DEL BACKEND
+          onError: (error) => {
+            Swal.fire("Error", error.response?.data || "No se puede eliminar la clasificación", "error");
+          }
+        });
       }
     });
   };

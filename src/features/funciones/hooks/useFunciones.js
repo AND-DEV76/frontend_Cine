@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getFunciones, createFuncion, deleteFuncion } from "../api/funcionApi";
+import Swal from "sweetalert2";
 
 export const useFunciones = () => {
 
@@ -29,7 +30,18 @@ export const useFunciones = () => {
   };
 
   const remove = async (id) => {
-    if (confirm("¿Eliminar función?")) {
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¿Eliminar función?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+    
+    if (result.isConfirmed) {
       await deleteFuncion(id);
       load();
     }

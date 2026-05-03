@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAsientosBySala } from "../api/salaApi";
 import SalaMatrix from "./SalaMatrix";
+import Swal from "sweetalert2";
 
 const SalaCard = ({ sala, onDelete }) => {
   const [asientos, setAsientos] = useState([]);
@@ -19,13 +20,20 @@ const SalaCard = ({ sala, onDelete }) => {
 
   // 🔥 AQUÍ VA TU FUNCIÓN
   const handleDelete = () => {
-    const confirmar = window.confirm(
-      `¿Estás seguro de eliminar la sala ${sala.numeroSala}?`
-    );
-
-    if (confirmar) {
-      onDelete(sala.idSala);
-    }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Estás seguro de eliminar la sala ${sala.numeroSala}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onDelete(sala.idSala);
+      }
+    });
   };
 
   return (

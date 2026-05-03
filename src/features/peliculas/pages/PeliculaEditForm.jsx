@@ -5,6 +5,7 @@ import { useGeneros } from "../hooks/useGeneros";
 import { useCreatePeliculaGenero } from "../hooks/useCreatePeliculaGenero";
 import { usePeliculas } from "../hooks/usePeliculas";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import Swal from "sweetalert2";
 
 const PeliculaEditForm = () => {
   const user = useCurrentUser();
@@ -82,22 +83,22 @@ const PeliculaEditForm = () => {
 
     // mismas validaciones que tu form original
     if (!form.nombre || !form.duracion || !form.idClasificacion || !form.descripcion) {
-      alert("Todos los campos obligatorios deben llenarse");
+      Swal.fire("Atención", "Todos los campos obligatorios deben llenarse", "warning");
       return;
     }
 
     if (isNaN(form.duracion)) {
-      alert("La duración debe ser un número");
+      Swal.fire("Error", "La duración debe ser un número", "error");
       return;
     }
 
     if (!user) {
-      alert("Usuario no autenticado");
+      Swal.fire("Error", "Usuario no autenticado", "error");
       return;
     }
 
     if (generosSeleccionados.length === 0) {
-      alert("Debes seleccionar al menos un género");
+      Swal.fire("Atención", "Debes seleccionar al menos un género", "warning");
       return;
     }
 
@@ -126,11 +127,11 @@ const PeliculaEditForm = () => {
         });
       }
 
-      alert("Película actualizada correctamente");
+      Swal.fire("Éxito", "Película actualizada correctamente", "success");
 
     } catch (error) {
       console.error(error);
-      alert("Error al actualizar película");
+      Swal.fire("Error", "Error al actualizar película", "error");
     }
   };
 

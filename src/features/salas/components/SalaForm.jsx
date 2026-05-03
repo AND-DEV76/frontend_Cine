@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const SalaForm = ({ onCreate }) => {
   const [numeroSala, setNumeroSala] = useState("");
@@ -8,7 +9,7 @@ const SalaForm = ({ onCreate }) => {
     e.preventDefault();
 
     if (!numeroSala) {
-      alert("Número de sala requerido");
+      Swal.fire("Error", "Número de sala requerido", "error");
       return;
     }
 

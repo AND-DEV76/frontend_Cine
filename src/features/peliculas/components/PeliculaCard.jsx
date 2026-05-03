@@ -1,5 +1,6 @@
 import { useDeletePelicula } from "../hooks/useDelete";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import Swal from "sweetalert2";
 
 const PeliculaCard = ({ pelicula, onEdit }) => {
   const { mutate: eliminar } = useDeletePelicula();
@@ -53,13 +54,20 @@ const PeliculaCard = ({ pelicula, onEdit }) => {
               className="pelicula-btn pelicula-btn-delete"
               onClick={(e) => {
                 e.stopPropagation();
-                const confirmar = window.confirm(
-                  `¿Seguro que deseas eliminar "${pelicula.nombre}"?`
-                );
-
-                if (confirmar) {
-                  eliminar(pelicula.idPelicula);
-                }
+                Swal.fire({
+                  title: '¿Estás seguro?',
+                  text: `¿Seguro que deseas eliminar "${pelicula.nombre}"?`,
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  confirmButtonText: 'Sí, eliminar',
+                  cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    eliminar(pelicula.idPelicula);
+                  }
+                });
               }}
             >
               Eliminar

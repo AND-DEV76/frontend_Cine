@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import "../../../styles/user.css";
 
 const ClasificacionForm = ({ onSubmit, selected, clear }) => {
@@ -14,7 +15,7 @@ const ClasificacionForm = ({ onSubmit, selected, clear }) => {
 
   const handleSubmit = () => {
     if (!nombre.trim() || !descripcion.trim()) {
-      alert("Todos los campos son obligatorios");
+      Swal.fire("Atención", "Todos los campos son obligatorios", "warning");
       return;
     }
 

@@ -1,12 +1,24 @@
 import { useDeleteRol } from "../hooks/useDeleteRol";
+import Swal from "sweetalert2";
 
 const RolTable = ({ roles, onEdit }) => {
   const { mutate: deleteRol } = useDeleteRol();
 
   const handleDelete = (id) => {
-    if (window.confirm("¿Eliminar este rol?")) {
-      deleteRol(id);
-    }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¿Eliminar este rol?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteRol(id);
+      }
+    });
   };
 
   return (

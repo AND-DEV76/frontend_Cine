@@ -1,13 +1,25 @@
 import { useDeleteUsuario } from "../hooks/useDeleteUsuario";
+import Swal from "sweetalert2";
 
 const UsuarioTable = ({ usuarios, onEdit }) => {
   const { mutate: deleteUser } = useDeleteUsuario();
 
   const handleDelete = (id) => {
-  if (window.confirm("¿Seguro que deseas eliminar este usuario?")) {
-    deleteUser(id);
-  }
-};
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¿Seguro que deseas eliminar este usuario?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(id);
+      }
+    });
+  };
   return (
     <table style={{ width: "100%", background: "var(--color-surface)", color: "var(--color-text)", borderRadius: "10px", overflow: "hidden" }}>
       <thead style={{ background: "var(--color-table-header)" }}>

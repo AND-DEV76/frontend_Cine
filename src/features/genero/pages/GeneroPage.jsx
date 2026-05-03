@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import "../../../styles/genero.css";
 
 import GeneroTable from "../components/GeneroTable";
@@ -37,17 +38,23 @@ const GeneroPage = () => {
   const handleDelete = (id) => {
 
     // 🟡 Confirmación
-    if (!window.confirm("¿Seguro que quieres eliminar este género?")) {
-      return;
-    }
-
-    remove.mutate(id, {
-      // 🔴 ERROR DEL BACKEND
-      onError: (error) => {
-        alert(
-          error.response?.data ||
-          "No se puede eliminar el género"
-        );
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¿Seguro que quieres eliminar este género?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        remove.mutate(id, {
+          // 🔴 ERROR DEL BACKEND
+          onError: (error) => {
+            Swal.fire("Error", error.response?.data || "No se puede eliminar el género", "error");
+          }
+        });
       }
     });
   };
