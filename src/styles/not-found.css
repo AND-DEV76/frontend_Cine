@@ -1,0 +1,116 @@
+/* ══════════════════════════════════════════════════
+   404 — NOT FOUND PAGE
+   ══════════════════════════════════════════════════ */
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-text);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient glow behind the image */
+.not-found::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  animation: notFoundPulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes notFoundPulse {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -60%) scale(1); }
+  50% { opacity: 0.6; transform: translate(-50%, -60%) scale(1.15); }
+}
+
+/* Image */
+.not-found__image {
+  width: 280px;
+  max-width: 80vw;
+  animation: notFoundFloat 5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 30px rgba(0, 200, 255, 0.2));
+  position: relative;
+  z-index: 1;
+  margin-bottom: 30px;
+}
+
+@keyframes notFoundFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+/* Error Code */
+.not-found__code {
+  font-family: var(--font-heading);
+  font-size: 7rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+  letter-spacing: -0.04em;
+}
+
+/* Title */
+.not-found__title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Message */
+.not-found__message {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  max-width: 420px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 35px;
+}
+
+/* CTA Buttons */
+.not-found__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .not-found__code {
+    font-size: 5rem;
+  }
+
+  .not-found__image {
+    width: 200px;
+  }
+
+  .not-found__title {
+    font-size: 1.3rem;
+  }
+}

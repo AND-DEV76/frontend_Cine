@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Navbar from "../components/Navbar";
@@ -21,7 +21,29 @@ import FuncionesPage from "../features/funciones/pages/FuncionesPage";
 import PeliculaDetallePage from "../features/funciones/pages/PeliculaDetallePage";
 import CheckoutPage from "../features/checkout/pages/CheckoutPage";
 import MisBoletosPage from "../features/checkout/pages/MisBoletosPage";
+import NotFoundPage from "../pages/NotFoundPage";
+
 const queryClient = new QueryClient();
+
+// Known routes for 404 detection
+const KNOWN_ROUTES = [
+  "/",
+  "/cartelera",
+  "/login",
+  "/register",
+  "/checkout",
+  "/mis-boletos",
+  "/peliculas/new",
+  "/admin",
+  "/admin/usuarios",
+  "/admin/generos",
+  "/admin/clasificaciones",
+  "/admin/salas",
+  "/admin/funciones",
+];
+
+const isDynamicRoute = (path) =>
+  path.startsWith("/pelicula/") || path.startsWith("/peliculas/edit/");
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);
@@ -45,9 +67,24 @@ function App() {
     localStorage.setItem("app-theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === "dark" ? "light" : "dark");
-  };
+  const toggleTheme = useCallback((e) => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+
+    // Create radial flash overlay from click position
+    const overlay = document.createElement("div");
+    overlay.className = `theme-transition-overlay theme-transition-overlay--to-${nextTheme}`;
+
+    // Center the radial gradient on the click position
+    const x = e?.clientX ?? window.innerWidth / 2;
+    const y = e?.clientY ?? window.innerHeight / 2;
+    overlay.style.setProperty("--tx", `${x}px`);
+    overlay.style.setProperty("--ty", `${y}px`);
+
+    document.body.appendChild(overlay);
+    overlay.addEventListener("animationend", () => overlay.remove());
+
+    setTheme(nextTheme);
+  }, [theme]);
 
   // USUARIO DESDE LOCALSTORAGE
   const user = JSON.parse(localStorage.getItem("user"));
@@ -57,6 +94,9 @@ function App() {
     user &&
     (user.rol.nombre === "ADMIN" ||
       user.rol.nombre === "EMPLEADO");
+
+  // Check if current path matches any known route
+  const isKnown = KNOWN_ROUTES.includes(path) || isDynamicRoute(path);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -85,8 +125,10 @@ function App() {
           {path === "/admin/generos" && (isAdmin ? <GeneroPage /> : <LoginPage />)}
           {path === "/admin/clasificaciones" && (isAdmin ? <ClasificacionPage /> : <LoginPage />)}
 
-
           {path === "/admin/funciones" && (isAdmin ? <FuncionesPage /> : <LoginPage />)}
+
+          {/* 404 — Not Found */}
+          {!isKnown && <NotFoundPage />}
         </div>
 
         {/* FOOTER */}

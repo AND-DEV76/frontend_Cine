@@ -4,6 +4,7 @@ import { useFunciones } from "../hooks/useFunciones";
 import FuncionForm from "../components/FuncionForm";
 import FuncionCard from "../components/FuncionCard";
 import "../../../styles/funciones.css";
+import Breadcrumb from "../../../components/Breadcrumb";
 
 const FuncionesPage = () => {
 
@@ -24,6 +25,7 @@ const FuncionesPage = () => {
 
   return (
     <div className="funciones-container">
+      <Breadcrumb items={[{ label: "Funciones" }]} />
 
       <h1>🎬 Funciones</h1>
 

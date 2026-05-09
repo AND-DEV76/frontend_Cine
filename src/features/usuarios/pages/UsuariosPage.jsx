@@ -8,6 +8,7 @@ import RolTable from "../../roles/components/RolTable";
 import RolForm from "../../roles/components/RolForm";
 
 import "../../../styles/user.css";
+import Breadcrumb from "../../../components/Breadcrumb";
 
 const UsuariosPage = () => {
   const { data, isLoading } = useUsuarios();
@@ -20,7 +21,7 @@ const UsuariosPage = () => {
 
   return (
     <div className="usuarios-container">
-
+      <Breadcrumb items={[{ label: "Usuarios" }]} />
       {/* USUARIOS */}
       <div className="usuarios-section">
         <div className="usuarios-table">

@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUpdatePelicula } from "../hooks/useUpdatePelicula";
 import { useClasificaciones } from "../hooks/useClasificaciones";
 import { useGeneros } from "../hooks/useGeneros";
 import { useCreatePeliculaGenero } from "../hooks/useCreatePeliculaGenero";
 import { usePeliculas } from "../hooks/usePeliculas";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
+import "../../../styles/pelicula.css";
+import Breadcrumb from "../../../components/Breadcrumb";
 import Swal from "sweetalert2";
+import { FiUploadCloud, FiX } from "react-icons/fi";
 
 const PeliculaEditForm = () => {
   const user = useCurrentUser();
@@ -25,6 +28,9 @@ const PeliculaEditForm = () => {
     poster: null,
   });
 
+  const [posterPreview, setPosterPreview] = useState(null);
+  const fileInputRef = useRef(null);
+
   const [generosSeleccionados, setGenerosSeleccionados] = useState([]);
   const [peliculaId, setPeliculaId] = useState(null);
 
@@ -35,7 +41,7 @@ const PeliculaEditForm = () => {
     setPeliculaId(Number(id));
   }, []);
 
-  // cargar datos
+  // cargar datos existentes
   useEffect(() => {
     if (!peliculaId || peliculas.length === 0) return;
 
@@ -50,6 +56,11 @@ const PeliculaEditForm = () => {
       poster: null,
     });
 
+    // Mostrar el poster actual como preview
+    if (peli.poster) {
+      setPosterPreview(peli.poster);
+    }
+
     setGenerosSeleccionados(
       peli.generos ? peli.generos.map(id => String(id)) : []
     );
@@ -60,9 +71,21 @@ const PeliculaEditForm = () => {
     const { name, value, files } = e.target;
 
     if (name === "poster") {
-      setForm({ ...form, poster: files[0] });
+      const file = files[0];
+      if (file) {
+        setForm({ ...form, poster: file });
+        setPosterPreview(URL.createObjectURL(file));
+      }
     } else {
       setForm({ ...form, [name]: value });
+    }
+  };
+
+  const clearPoster = () => {
+    setForm({ ...form, poster: null });
+    setPosterPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -81,7 +104,6 @@ const PeliculaEditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // mismas validaciones que tu form original
     if (!form.nombre || !form.duracion || !form.idClasificacion || !form.descripcion) {
       Swal.fire("Atención", "Todos los campos obligatorios deben llenarse", "warning");
       return;
@@ -136,11 +158,19 @@ const PeliculaEditForm = () => {
   };
 
   return (
+    <div>
+      <div style={{ padding: "0 40px" }}>
+        <Breadcrumb items={[
+          { label: "Películas", path: "/peliculas/new" },
+          { label: "Editar" }
+        ]} />
+      </div>
     <form onSubmit={handleSubmit} className="pelicula-form">
       <h2>Editar Película</h2>
 
       <input
         name="nombre"
+        placeholder="Nombre"
         value={form.nombre}
         onChange={handleChange}
         className="pelicula-input"
@@ -148,6 +178,7 @@ const PeliculaEditForm = () => {
 
       <input
         name="duracion"
+        placeholder="Duración (min)"
         value={form.duracion}
         onChange={handleChange}
         className="pelicula-input"
@@ -169,6 +200,7 @@ const PeliculaEditForm = () => {
 
       <input
         name="descripcion"
+        placeholder="Descripción"
         value={form.descripcion}
         onChange={handleChange}
         className="pelicula-input"
@@ -188,17 +220,43 @@ const PeliculaEditForm = () => {
         ))}
       </div>
 
-      <input
-        type="file"
-        name="poster"
-        onChange={handleChange}
-        className="pelicula-input"
-      />
+      {/* 🖼️ POSTER UPLOAD CON PREVIEW */}
+      <div className="poster-upload-area">
+        {posterPreview ? (
+          <div className="poster-preview">
+            <img src={posterPreview} alt="Vista previa del poster" className="poster-preview__img" />
+            <div className="poster-preview__overlay">
+              <button type="button" className="poster-preview__remove" onClick={clearPoster} title="Quitar imagen">
+                <FiX />
+              </button>
+            </div>
+            <span className="poster-preview__name">
+              {form.poster?.name || "Poster actual"}
+            </span>
+          </div>
+        ) : (
+          <label className="poster-dropzone" htmlFor="poster-edit-input">
+            <FiUploadCloud className="poster-dropzone__icon" />
+            <span className="poster-dropzone__text">Cambiar poster (opcional)</span>
+            <span className="poster-dropzone__hint">JPG, PNG o WEBP</span>
+          </label>
+        )}
+        <input
+          id="poster-edit-input"
+          type="file"
+          name="poster"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleChange}
+          style={{ display: "none" }}
+        />
+      </div>
 
       <button type="submit" disabled={isLoading} className="pelicula-button">
         {isLoading ? "Guardando..." : "Actualizar"}
       </button>
     </form>
+    </div>
   );
 };
 

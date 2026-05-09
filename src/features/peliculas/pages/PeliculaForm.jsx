@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useCreatePelicula } from "../hooks/useCreatePelicula";
 import { useClasificaciones } from "../hooks/useClasificaciones";
 import { useGeneros } from "../hooks/useGeneros";
 import { useCreatePeliculaGenero } from "../hooks/useCreatePeliculaGenero";
 import { useCurrentUser } from "../../auth/hooks/useCurrentUser";
 import "../../../styles/pelicula.css";
+import Breadcrumb from "../../../components/Breadcrumb";
 import Swal from 'sweetalert2';
+import { FiUploadCloud, FiX } from "react-icons/fi";
 
 const PeliculaForm = () => {
   const user = useCurrentUser();
@@ -23,15 +25,30 @@ const PeliculaForm = () => {
     poster: null,
   });
 
+  const [posterPreview, setPosterPreview] = useState(null);
+  const fileInputRef = useRef(null);
+
   const [generosSeleccionados, setGenerosSeleccionados] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "poster") {
-      setForm({ ...form, poster: files[0] });
+      const file = files[0];
+      if (file) {
+        setForm({ ...form, poster: file });
+        setPosterPreview(URL.createObjectURL(file));
+      }
     } else {
       setForm({ ...form, [name]: value });
+    }
+  };
+
+  const clearPoster = () => {
+    setForm({ ...form, poster: null });
+    setPosterPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -65,13 +82,11 @@ const PeliculaForm = () => {
       return;
     }
 
-    // 🆕 VALIDACIÓN GÉNEROS
     if (generosSeleccionados.length === 0) {
       Swal.fire('Advertencia', 'Debes seleccionar al menos un género', 'warning');
       return;
     }
 
-    // 🆕 VALIDACIÓN POSTER
     if (!form.poster) {
       Swal.fire('Advertencia', 'Debes seleccionar una imagen (poster)', 'warning');
       return;
@@ -98,7 +113,6 @@ const PeliculaForm = () => {
 
       console.log("PELÍCULA ID:", peliculaId);
 
-      // 🔥 RELACIONES
       for (const idGenero of generosSeleccionados) {
         const payload = {
           idPelicula: peliculaId,
@@ -120,7 +134,8 @@ const PeliculaForm = () => {
         descripcion: "",
         poster: null,
       });
-
+      setPosterPreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       setGenerosSeleccionados([]);
 
     } catch (error) {
@@ -132,6 +147,10 @@ const PeliculaForm = () => {
   };
 
   return (
+    <div>
+      <div style={{ padding: "0 40px" }}>
+        <Breadcrumb items={[{ label: "Películas" }]} />
+      </div>
     <form onSubmit={handleSubmit} className="pelicula-form">
       <h2>Nueva Película</h2>
 
@@ -188,17 +207,41 @@ const PeliculaForm = () => {
         ))}
       </div>
 
-      <input
-        type="file"
-        name="poster"
-        onChange={handleChange}
-        className="pelicula-input"
-      />
+      {/* 🖼️ POSTER UPLOAD CON PREVIEW */}
+      <div className="poster-upload-area">
+        {posterPreview ? (
+          <div className="poster-preview">
+            <img src={posterPreview} alt="Vista previa del poster" className="poster-preview__img" />
+            <div className="poster-preview__overlay">
+              <button type="button" className="poster-preview__remove" onClick={clearPoster} title="Quitar imagen">
+                <FiX />
+              </button>
+            </div>
+            <span className="poster-preview__name">{form.poster?.name}</span>
+          </div>
+        ) : (
+          <label className="poster-dropzone" htmlFor="poster-input">
+            <FiUploadCloud className="poster-dropzone__icon" />
+            <span className="poster-dropzone__text">Haz clic para subir el poster</span>
+            <span className="poster-dropzone__hint">JPG, PNG o WEBP</span>
+          </label>
+        )}
+        <input
+          id="poster-input"
+          type="file"
+          name="poster"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleChange}
+          style={{ display: "none" }}
+        />
+      </div>
 
       <button type="submit" disabled={isLoading} className="pelicula-button">
         {isLoading ? "Guardando..." : "Guardar"}
       </button>
     </form>
+    </div>
   );
 };
 

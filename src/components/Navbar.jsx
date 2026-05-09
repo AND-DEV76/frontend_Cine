@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useCurrentUser } from "../features/auth/hooks/useCurrentUser";
 import { useLogout } from "../features/auth/hooks/useLogout";
-import { FiSun, FiMoon } from "react-icons/fi";
+import { FiSun, FiMoon, FiUser, FiBookOpen, FiSettings, FiLogOut, FiChevronDown } from "react-icons/fi";
 import mascotImg from "../assets/logo.png";
 import "../styles/navbar.css";
 
@@ -9,6 +9,8 @@ const Navbar = ({ theme, toggleTheme }) => {
   const user = useCurrentUser();
   const { logout } = useLogout();
   const [scrolled, setScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -16,7 +18,19 @@ const Navbar = ({ theme, toggleTheme }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const goTo = (path) => {
+    setDropdownOpen(false);
     window.history.pushState({}, "", path);
     window.dispatchEvent(new Event("popstate"));
   };
@@ -35,7 +49,7 @@ const Navbar = ({ theme, toggleTheme }) => {
         <span className="nav-link" onClick={() => goTo("/cartelera")}>Cartelera</span>
       </div>
 
-      <div className="nav-user" style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+      <div className="nav-user" style={{ display: "flex", gap: "20px", alignItems: "center" }}>
         <button
           onClick={toggleTheme}
           className="theme-toggle-btn"
@@ -49,20 +63,48 @@ const Navbar = ({ theme, toggleTheme }) => {
             Iniciar Sesión
           </button>
         ) : (
-          <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
-            <span className="user-greeting">
-              Hola, <span className="user-name">{user.username}</span>
-            </span>
+          <div className="user-dropdown-container" ref={dropdownRef}>
+            <div 
+              className="user-dropdown-trigger" 
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <div className="user-avatar">
+                <FiUser />
+              </div>
+              <span className="user-name-short">{user.username}</span>
+              <FiChevronDown className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`} />
+            </div>
 
-            {(user.rol.nombre === "ADMIN" || user.rol.nombre === "EMPLEADO") && (
-              <button className="btn-royale btn-ghost" onClick={() => goTo("/admin")}>
-                Administración
-              </button>
+            {dropdownOpen && (
+              <div className="user-dropdown-menu">
+                <div className="dropdown-header">
+                  <span className="dropdown-greeting">Hola,</span>
+                  <span className="dropdown-username">{user.username}</span>
+                  <span className="dropdown-role">{user.rol.nombre}</span>
+                </div>
+                
+                <div className="dropdown-divider"></div>
+
+                <button className="dropdown-item" onClick={() => goTo("/mis-boletos")}>
+                  <FiBookOpen className="dropdown-icon" />
+                  Mis Boletos
+                </button>
+
+                {(user.rol.nombre === "ADMIN" || user.rol.nombre === "EMPLEADO") && (
+                  <button className="dropdown-item" onClick={() => goTo("/admin")}>
+                    <FiSettings className="dropdown-icon" />
+                    Administración
+                  </button>
+                )}
+
+                <div className="dropdown-divider"></div>
+
+                <button className="dropdown-item dropdown-item--danger" onClick={() => { setDropdownOpen(false); logout(); }}>
+                  <FiLogOut className="dropdown-icon" />
+                  Cerrar Sesión
+                </button>
+              </div>
             )}
-
-            <button className="btn-royale btn-ghost" onClick={logout}>
-              Cerrar Sesión
-            </button>
           </div>
         )}
       </div>

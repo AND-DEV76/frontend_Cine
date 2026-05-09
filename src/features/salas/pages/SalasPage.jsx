@@ -2,6 +2,7 @@ import "../../../styles/salas.css";
 import { useSalas, useCreateSala, useDeleteSala } from "../hooks/useSalas";
 import SalaCard from "../components/SalaCard";
 import SalaForm from "../components/SalaForm";
+import Breadcrumb from "../../../components/Breadcrumb";
 
 const SalasPage = () => {
   const { data: salas = [] } = useSalas();
@@ -10,6 +11,7 @@ const SalasPage = () => {
 
   return (
     <div className="salas-container">
+      <Breadcrumb items={[{ label: "Salas" }]} />
 
       <h2>Salas</h2>
 

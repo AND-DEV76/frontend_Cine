@@ -194,3 +194,98 @@
     width: 90%;
   }
 }
+
+/* ── POSTER UPLOAD AREA ────────────────────── */
+.poster-upload-area {
+  width: 100%;
+}
+
+.poster-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 30px 20px;
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  background: var(--color-input-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.poster-dropzone:hover {
+  border-color: var(--color-primary);
+  background: rgba(0, 200, 255, 0.04);
+}
+
+.poster-dropzone__icon {
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  opacity: 0.7;
+}
+
+.poster-dropzone__text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.poster-dropzone__hint {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+/* ── POSTER PREVIEW ────────────────────────── */
+.poster-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.poster-preview__img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-input-bg);
+}
+
+.poster-preview__overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.poster-preview__remove {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.poster-preview__remove:hover {
+  background: #dc2626;
+  transform: scale(1.15);
+}
+
+.poster-preview__name {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

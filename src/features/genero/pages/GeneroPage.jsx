@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import "../../../styles/genero.css";
+import Breadcrumb from "../../../components/Breadcrumb";
 
 import GeneroTable from "../components/GeneroTable";
 import GeneroForm from "../components/GeneroForm";
@@ -61,6 +62,7 @@ const GeneroPage = () => {
 
   return (
     <div className="container">
+      <Breadcrumb items={[{ label: "Géneros" }]} />
       <div className="grid-2">
 
         {/* TABLA */}

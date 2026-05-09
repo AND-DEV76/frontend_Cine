@@ -1,5 +1,5 @@
 import React from 'react';
-import mascotImg from '../../../assets/minipekka.png';
+import mascotImg from '../../../assets/logo.png';
 import '../../../styles/landing.css';
 
 const LandingPage = () => {
@@ -61,7 +61,7 @@ const LandingPage = () => {
         <div className="stats-grid">
           <div className="stat-item">
             <div className="stat-number">6</div>
-            <div className="stat-label">Salas Premium</div>
+            <div className="stat-label">Salas</div>
           </div>
           <div className="stat-item">
             <div className="stat-number">4K</div>
@@ -82,7 +82,7 @@ const LandingPage = () => {
       <section className="features-section">
         <div className="section-header">
           <span className="section-tag">Nuestras Salas</span>
-          <h2 className="section-title">Una experiencia cinematográfica premium</h2>
+          <h2 className="section-title">Una experiencia cinematográfica de alto nivel</h2>
         </div>
 
         <div className="features-grid">

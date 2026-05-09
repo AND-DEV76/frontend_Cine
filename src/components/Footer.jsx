@@ -29,8 +29,8 @@ const Footer = () => {
           <ul className="footer-links">
             <li><span onClick={() => goTo('/')}>Inicio</span></li>
             <li><span onClick={() => goTo('/cartelera')}>Cartelera</span></li>
-            <li><span>Próximos Estrenos</span></li>
-            <li><span>Promociones</span></li>
+            <li><span onClick={() => goTo('/cartelera')}>Próximos Estrenos</span></li>
+            <li><span onClick={() => goTo('/cartelera')}>Promociones</span></li>
           </ul>
         </div>
 
@@ -47,7 +47,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} Cinema Royale. Todos los derechos reservados.</p>
-        <p>Diseñado con dedicación.</p>
+        <p>Ingenieria Del Software</p>
       </div>
     </footer>
   );

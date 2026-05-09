@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import "../../../styles/clasificacion.css";
+import Breadcrumb from "../../../components/Breadcrumb";
 
 import ClasificacionTable from "../components/ClasificacionTable";
 import ClasificacionForm from "../components/ClasificacionForm";
@@ -61,6 +62,7 @@ const ClasificacionPage = () => {
 
   return (
     <div className="container">
+      <Breadcrumb items={[{ label: "Clasificaciones" }]} />
       <div className="grid-2">
 
         {/* TABLA */}

@@ -1,0 +1,54 @@
+/* ══════════════════════════════════════════════════
+   BREADCRUMB NAVIGATION
+   ══════════════════════════════════════════════════ */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 0;
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumb__segment {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumb__separator {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  opacity: 0.5;
+}
+
+.breadcrumb__home-icon {
+  font-size: 0.95rem;
+}
+
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb__item--link {
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.breadcrumb__item--link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.breadcrumb__item--active {
+  color: var(--color-text);
+  font-weight: 700;
+  pointer-events: none;
+}
