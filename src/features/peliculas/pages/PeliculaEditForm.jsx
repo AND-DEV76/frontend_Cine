@@ -62,7 +62,7 @@ const PeliculaEditForm = () => {
     }
 
     setGenerosSeleccionados(
-      peli.generos ? peli.generos.map(id => String(id)) : []
+      peli.generosIds ? peli.generosIds.map(id => String(id)) : []
     );
 
   }, [peliculaId, peliculas]);
