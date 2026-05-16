@@ -41,7 +41,7 @@ const LoginForm = () => {
       {error && <p style={{ color: "var(--color-danger)" }}>{error}</p>}
 
       <input
-        placeholder="Username"
+        placeholder="Usuario o Correo"
         value={form.username}
         onChange={(e) =>
           setForm({ ...form, username: e.target.value })

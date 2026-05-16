@@ -22,6 +22,8 @@ const PeliculaForm = () => {
     duracion: "",
     idClasificacion: "",
     descripcion: "",
+    trailer: "",
+    anio: "",
     poster: null,
   });
 
@@ -98,12 +100,12 @@ const PeliculaForm = () => {
     data.append("idClasificacion", form.idClasificacion);
     data.append("descripcion", form.descripcion);
     data.append("poster", form.poster);
+    if (form.trailer) data.append("trailer", form.trailer);
+    if (form.anio) data.append("anio", form.anio);
     data.append("creadoPor", user.idUsuario);
 
     try {
       const res = await crearPeliculaAsync(data);
-
-      console.log("RESPUESTA COMPLETA:", res);
 
       const peliculaId = res?.data?.idPelicula || res?.idPelicula;
 
@@ -119,8 +121,6 @@ const PeliculaForm = () => {
           idGenero: Number(idGenero),
         };
 
-        console.log("ENVIANDO RELACIÓN:", payload);
-
         await crearRelacionAsync(payload);
       }
 
@@ -132,6 +132,8 @@ const PeliculaForm = () => {
         duracion: "",
         idClasificacion: "",
         descripcion: "",
+        trailer: "",
+        anio: "",
         poster: null,
       });
       setPosterPreview(null);
@@ -139,9 +141,6 @@ const PeliculaForm = () => {
       setGenerosSeleccionados([]);
 
     } catch (error) {
-      console.error("ERROR COMPLETO:", error);
-      console.error("RESPONSE DATA:", error.response?.data);
-
       Swal.fire('Error', 'Error al guardar la película', 'error');
     }
   };
@@ -192,7 +191,23 @@ const PeliculaForm = () => {
         className="pelicula-input"
       />
 
-      {/* 🎬 GÉNEROS */}
+      <input
+        name="trailer"
+        placeholder="URL del trailer (YouTube)"
+        value={form.trailer}
+        onChange={handleChange}
+        className="pelicula-input"
+      />
+
+      <input
+        name="anio"
+        placeholder="Año de estreno"
+        value={form.anio}
+        onChange={handleChange}
+        className="pelicula-input"
+        type="number"
+      />
+
       <div className="pelicula-generos">
         {generos.map((g) => (
           <label key={g.id_genero}>

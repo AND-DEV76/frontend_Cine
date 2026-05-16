@@ -25,6 +25,8 @@ const PeliculaEditForm = () => {
     duracion: "",
     idClasificacion: "",
     descripcion: "",
+    trailer: "",
+    anio: "",
     poster: null,
   });
 
@@ -53,6 +55,8 @@ const PeliculaEditForm = () => {
       duracion: peli.duracion || "",
       idClasificacion: peli.idClasificacion || "",
       descripcion: peli.descripcion || "",
+      trailer: peli.trailer || "",
+      anio: peli.anio || "",
       poster: null,
     });
 
@@ -129,6 +133,8 @@ const PeliculaEditForm = () => {
     data.append("duracion", form.duracion);
     data.append("idClasificacion", form.idClasificacion);
     data.append("descripcion", form.descripcion);
+    if (form.trailer) data.append("trailer", form.trailer);
+    if (form.anio) data.append("anio", form.anio);
     data.append("creadoPor", user.idUsuario);
 
     if (form.poster) {
@@ -165,97 +171,114 @@ const PeliculaEditForm = () => {
           { label: "Editar" }
         ]} />
       </div>
-    <form onSubmit={handleSubmit} className="pelicula-form">
-      <h2>Editar Película</h2>
+      <form onSubmit={handleSubmit} className="pelicula-form">
+        <h2>Editar Película</h2>
 
-      <input
-        name="nombre"
-        placeholder="Nombre"
-        value={form.nombre}
-        onChange={handleChange}
-        className="pelicula-input"
-      />
-
-      <input
-        name="duracion"
-        placeholder="Duración (min)"
-        value={form.duracion}
-        onChange={handleChange}
-        className="pelicula-input"
-      />
-
-      <select
-        name="idClasificacion"
-        value={form.idClasificacion}
-        onChange={handleChange}
-        className="pelicula-input"
-      >
-        <option value="">Seleccionar clasificación</option>
-        {clasificaciones.map((c) => (
-          <option key={c.id_clasificacion} value={c.id_clasificacion}>
-            {c.nombre}
-          </option>
-        ))}
-      </select>
-
-      <input
-        name="descripcion"
-        placeholder="Descripción"
-        value={form.descripcion}
-        onChange={handleChange}
-        className="pelicula-input"
-      />
-
-      <div className="pelicula-generos">
-        {generos.map((g) => (
-          <label key={g.id_genero}>
-            <input
-              type="checkbox"
-              value={g.id_genero}
-              checked={generosSeleccionados.includes(String(g.id_genero))}
-              onChange={handleGeneroChange}
-            />
-            {g.nombre}
-          </label>
-        ))}
-      </div>
-
-      {/* 🖼️ POSTER UPLOAD CON PREVIEW */}
-      <div className="poster-upload-area">
-        {posterPreview ? (
-          <div className="poster-preview">
-            <img src={posterPreview} alt="Vista previa del poster" className="poster-preview__img" />
-            <div className="poster-preview__overlay">
-              <button type="button" className="poster-preview__remove" onClick={clearPoster} title="Quitar imagen">
-                <FiX />
-              </button>
-            </div>
-            <span className="poster-preview__name">
-              {form.poster?.name || "Poster actual"}
-            </span>
-          </div>
-        ) : (
-          <label className="poster-dropzone" htmlFor="poster-edit-input">
-            <FiUploadCloud className="poster-dropzone__icon" />
-            <span className="poster-dropzone__text">Cambiar poster (opcional)</span>
-            <span className="poster-dropzone__hint">JPG, PNG o WEBP</span>
-          </label>
-        )}
         <input
-          id="poster-edit-input"
-          type="file"
-          name="poster"
-          accept="image/*"
-          ref={fileInputRef}
+          name="nombre"
+          placeholder="Nombre"
+          value={form.nombre}
           onChange={handleChange}
-          style={{ display: "none" }}
+          className="pelicula-input"
         />
-      </div>
 
-      <button type="submit" disabled={isLoading} className="pelicula-button">
-        {isLoading ? "Guardando..." : "Actualizar"}
-      </button>
-    </form>
+        <input
+          name="duracion"
+          placeholder="Duración (min)"
+          value={form.duracion}
+          onChange={handleChange}
+          className="pelicula-input"
+        />
+
+        <select
+          name="idClasificacion"
+          value={form.idClasificacion}
+          onChange={handleChange}
+          className="pelicula-input"
+        >
+          <option value="">Seleccionar clasificación</option>
+          {clasificaciones.map((c) => (
+            <option key={c.id_clasificacion} value={c.id_clasificacion}>
+              {c.nombre}
+            </option>
+          ))}
+        </select>
+
+        <input
+          name="descripcion"
+          placeholder="Descripción"
+          value={form.descripcion}
+          onChange={handleChange}
+          className="pelicula-input"
+        />
+
+        <input
+          name="trailer"
+          placeholder="URL del trailer (YouTube)"
+          value={form.trailer}
+          onChange={handleChange}
+          className="pelicula-input"
+        />
+
+        <input
+          name="anio"
+          placeholder="Año de estreno"
+          value={form.anio}
+          onChange={handleChange}
+          className="pelicula-input"
+          type="number"
+        />
+
+        <div className="pelicula-generos">
+          {generos.map((g) => (
+            <label key={g.id_genero}>
+              <input
+                type="checkbox"
+                value={g.id_genero}
+                checked={generosSeleccionados.includes(String(g.id_genero))}
+                onChange={handleGeneroChange}
+              />
+              {g.nombre}
+            </label>
+          ))}
+        </div>
+
+        {/* 🖼️ POSTER UPLOAD CON PREVIEW */}
+        <div className="poster-upload-area">
+          {posterPreview ? (
+            <div className="poster-preview">
+              <img src={posterPreview} alt="Vista previa del poster" className="poster-preview__img" />
+              <div className="poster-preview__overlay">
+                <button type="button" className="poster-preview__remove" onClick={clearPoster} title="Quitar imagen">
+                  <FiX />
+                </button>
+              </div>
+              <span className="poster-preview__name">
+                {form.poster?.name || "Poster actual"}
+              </span>
+            </div>
+          ) : (
+            <label className="poster-dropzone" htmlFor="poster-edit-input">
+              <FiUploadCloud className="poster-dropzone__icon" />
+              <span className="poster-dropzone__text">Cambiar poster (opcional)</span>
+              <span className="poster-dropzone__hint">JPG, PNG o WEBP</span>
+            </label>
+          )}
+          <input
+            id="poster-edit-input"
+            type="file"
+            name="poster"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleChange}
+            style={{ display: "none" }}
+          />
+        </div>
+
+        <button type="submit" disabled={isLoading} className="pelicula-button">
+          {isLoading ? "Guardando..." : "Actualizar"}
+        </button>
+      </form>
     </div>
   );
 };

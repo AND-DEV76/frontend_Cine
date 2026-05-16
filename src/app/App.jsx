@@ -87,13 +87,17 @@ function App() {
   }, [theme]);
 
   // USUARIO DESDE LOCALSTORAGE
-  const user = JSON.parse(localStorage.getItem("user"));
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    localStorage.removeItem("user");
+  }
 
   // VALIDACIÓN DE ROL
   const isAdmin =
-    user &&
-    (user.rol.nombre === "ADMIN" ||
-      user.rol.nombre === "EMPLEADO");
+    user?.rol?.nombre === "ADMIN" ||
+    user?.rol?.nombre === "EMPLEADO";
 
   // Check if current path matches any known route
   const isKnown = KNOWN_ROUTES.includes(path) || isDynamicRoute(path);

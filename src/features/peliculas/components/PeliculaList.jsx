@@ -4,8 +4,6 @@ import PeliculaCard from "./PeliculaCard";
 const PeliculaList = ({ goTo }) => {
   const { data, isLoading, isError } = usePeliculas();
 
-  console.log("DATA PELICULAS:", data);
-
   if (isLoading) return <p>Cargando películas...</p>;
   if (isError) return <p>Error al cargar películas</p>;
 
